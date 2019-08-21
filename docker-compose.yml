@@ -1,0 +1,32 @@
+version: "3"
+services:
+  server:
+    build: .
+    container_name: "server-epico"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+
+  # postgres:
+  #   image: postgres:10.7-alpine
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: admin
+  #     POSTGRES_PASSWORD: postgres
+
+  db:
+    image: mysql:5.7
+    container_name: "db-epico"
+    restart: always
+    ports:
+      - "3306:3306"
+    command: mysqld --sql_mode=""
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: admin-epico
+      PMA_HOST: db
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./data/logs/mysql:/var/log/mysql
